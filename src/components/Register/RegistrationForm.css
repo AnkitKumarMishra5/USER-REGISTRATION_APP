@@ -1,0 +1,11 @@
+.form-section{
+    background-color: white;
+    padding: 16px;
+    margin: 16px;
+}
+
+@media (min-width: 992px){
+    .form-section{
+        max-width: 600px;
+    }
+}
