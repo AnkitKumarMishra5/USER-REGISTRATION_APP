@@ -16,8 +16,19 @@ const RegistrationForm = (props) => {
   const [mobileError, setMobileError] = useState(true);
   const [linkedInError, setLinkedInError] = useState(true);
 
+  const [tac, setTac] = useState(false);
   const [submit, setSubmit] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
+
+  const clear = () => {
+    setNewUser({
+      first_name: "",
+      last_name: "",
+      email: "",
+      phone: "",
+      linkedInProfile: "",
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,10 +38,12 @@ const RegistrationForm = (props) => {
       !lastNameError &&
       !emailError &&
       !mobileError &&
-      !linkedInError
+      !linkedInError &&
+      tac
     ) {
       setShowMessage(true);
       await props.props.handleSubmit();
+      clear();
       props.history.push("/success");
     }
   };
@@ -49,12 +62,14 @@ const RegistrationForm = (props) => {
                   type="text"
                   placeholder="First name"
                   value={newUser.first_name}
-                  onChange={(e) => (
-                    setNewUser({ ...newUser, first_name: e.target.value }),
-                    e.target.value !== ""
-                      ? setFirstNameError(false)
-                      : setFirstNameError(true)
-                  )}
+                  onChange={(e) =>
+                    setNewUser(
+                      { ...newUser, first_name: e.target.value },
+                        e.target.value !== ""
+                          ? setFirstNameError(false)
+                          : setFirstNameError(true)
+                    )
+                  }
                 />
                 {!firstNameError && (
                   <Form.Text className="text-muted">Looks good!</Form.Text>
@@ -72,8 +87,8 @@ const RegistrationForm = (props) => {
                   type="text"
                   placeholder="Last name"
                   value={newUser.last_name}
-                  onChange={(e) => (
-                    setNewUser({ ...newUser, last_name: e.target.value }),
+                  onChange={(e) => 
+                    setNewUser({ ...newUser, last_name: e.target.value },
                     e.target.value !== ""
                       ? setLastNameError(false)
                       : setLastNameError(true)
@@ -100,9 +115,9 @@ const RegistrationForm = (props) => {
                     placeholder="Email"
                     aria-describedby="inputGroupPrepend"
                     value={newUser.email}
-                    onChange={(e) => (
-                      setNewUser({ ...newUser, email: e.target.value }),
-                      /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/.test(
+                    onChange={(e) => 
+                      setNewUser({ ...newUser, email: e.target.value },
+                      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
                         e.target.value
                       )
                         ? setEmailError(false)
@@ -127,9 +142,9 @@ const RegistrationForm = (props) => {
                   type="text"
                   placeholder="Phone Number"
                   value={newUser.phone}
-                  onChange={(e) => (
-                    setNewUser({ ...newUser, phone: e.target.value }),
-                    /^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$/.test(e.target.value)
+                  onChange={(e) => 
+                    setNewUser({ ...newUser, phone: e.target.value },
+                    /^(\+91[\s]?)?[0]?(91)?[789]\d{9}$/.test(e.target.value)
                       ? setMobileError(false)
                       : setMobileError(true)
                   )}
@@ -150,8 +165,8 @@ const RegistrationForm = (props) => {
                   type="text"
                   placeholder="LinkedIn Profile"
                   required
-                  onChange={(e) => (
-                    setNewUser({ ...newUser, linkedInProfile: e.target.value }),
+                  onChange={(e) => 
+                    setNewUser({ ...newUser, linkedInProfile: e.target.value },
                     /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi.test(
                       e.target.value
                     )
@@ -174,6 +189,8 @@ const RegistrationForm = (props) => {
                 required
                 label="Agree to terms and conditions"
                 feedback="You must agree before submitting."
+                checked={tac}
+                onChange={() => setTac(!tac)}
               />
             </Form.Group>
             <Button type="submit">Submit form</Button>

@@ -1,0 +1,19 @@
+.links{
+    background-color: white;
+    padding: 16px;
+    margin: 16px;
+}
+
+a{
+    color: black;
+    text-decoration: none;
+}
+
+.list-group-item:hover{
+    opacity: 0.8;
+}
+
+a:hover{
+    color: black;
+    text-decoration: none;
+}
